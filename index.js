@@ -1,8 +1,5 @@
 const express = require("express");
-const { status } = require("express/lib/response");
 const app = express();
-
-app.use(express.json());
 
 let notes = [
 	{
@@ -24,6 +21,15 @@ let notes = [
 		important: false,
 	},
 ];
+const requestLogger = (request, response, next) => {
+	console.log("Method :", request.method);
+	console.log("Path :", request.path);
+	console.log("Body :", request.body);
+	next();
+};
+app.use(express.json());
+
+app.use(requestLogger);
 
 // app.get("/", (request, response) => {
 // 	response.send("<h1>Hello World</h1>");
@@ -58,6 +64,7 @@ const generatedId = () => {
 
 app.post("/api/notes", (request, response) => {
 	const body = request.body;
+	console.log(body);
 
 	if (!body.content) {
 		return response.status(400).json({
@@ -74,6 +81,11 @@ app.post("/api/notes", (request, response) => {
 	console.log(note);
 	response.json(note);
 });
+
+const unknownEndpoint = (request, response) => {
+	response.status(404).send("Unknown endpoint");
+};
+app.use(unknownEndpoint);
 
 const PORT = 3002;
 app.listen(PORT);
