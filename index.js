@@ -1,8 +1,7 @@
 const express = require("express");
-const { status } = require("express/lib/response");
-const app = express();
 
-app.use(express.json());
+const cors = require("cors");
+const app = express();
 
 let notes = [
 	{
@@ -24,6 +23,16 @@ let notes = [
 		important: false,
 	},
 ];
+const requestLogger = (request, response, next) => {
+	console.log("Method :", request.method);
+	console.log("Path :", request.path);
+	console.log("Body :", request.body);
+	next();
+};
+app.use(cors());
+app.use(express.json());
+
+app.use(requestLogger);
 
 // app.get("/", (request, response) => {
 // 	response.send("<h1>Hello World</h1>");
@@ -58,6 +67,7 @@ const generatedId = () => {
 
 app.post("/api/notes", (request, response) => {
 	const body = request.body;
+	console.log(body);
 
 	if (!body.content) {
 		return response.status(400).json({
@@ -75,6 +85,12 @@ app.post("/api/notes", (request, response) => {
 	response.json(note);
 });
 
-const PORT = 3002;
-app.listen(PORT);
-console.log(`Server running on port ${PORT}`);
+const unknownEndpoint = (request, response) => {
+	response.status(404).send("Unknown endpoint");
+};
+app.use(unknownEndpoint);
+
+const PORT = process.env.PORT || 3002;
+app.listen(PORT, () => {
+	console.log(`Server running on the port ${PORT}`);
+});
