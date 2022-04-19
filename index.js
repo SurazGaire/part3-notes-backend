@@ -28,17 +28,14 @@ app.get("/api/notes/", (request, response) => {
 });
 
 app.get("/api/notes/:id", (request, response) => {
-	const id = Number(request.params.id);
-	const note = notes.find((note) => note.id === id);
-	if (note) {
+	const id = String(request.params.id);
+	Note.findById(id).then((note) => {
 		response.json(note);
-	} else {
-		response.status(404).end();
-	}
+	});
 });
 
 app.delete("/api/notes/:id", (request, response) => {
-	const id = Number(request.params.id);
+	const id = String(request.params.id);
 
 	Note.findById(id).then((note) => {
 		response.json(note);
@@ -47,16 +44,8 @@ app.delete("/api/notes/:id", (request, response) => {
 	response.status(204).end();
 });
 
-// const generatedId = () => {
-// 	const maxId =
-// 		notes.length > 0 ? Math.max(...notes.map((note) => note.id)) : 0;
-// 	return maxId + 1;
-// };
-
 app.post("/api/notes", (request, response) => {
 	const body = request.body;
-	console.log(body);
-
 	if (!body.content) {
 		return response.status(400).json({
 			error: "Content Missing",
@@ -78,7 +67,7 @@ const unknownEndpoint = (request, response) => {
 };
 app.use(unknownEndpoint);
 
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
 	console.log(`Server running on the port ${PORT}`);
 });
