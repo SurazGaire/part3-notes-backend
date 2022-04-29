@@ -62,10 +62,10 @@ app.post("/api/notes", (request, response) => {
 	});
 });
 
-const unknownEndpoint = (request, response) => {
-	response.status(404).send("Unknown endpoint");
-};
-app.use(unknownEndpoint);
+// const unknownEndpoint = (request, response) => {
+// 	response.status(404).send("Unknown endpoint");
+// };
+// app.use(unknownEndpoint);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
