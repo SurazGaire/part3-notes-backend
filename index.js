@@ -27,21 +27,43 @@ app.get("/api/notes/", (request, response) => {
 	});
 });
 
-app.get("/api/notes/:id", (request, response) => {
-	const id = String(request.params.id);
-	Note.findById(id).then((note) => {
-		response.json(note);
-	});
+app.get("/api/notes/:id", (request, response, next) => {
+	Note.findById(request.params.id)
+		.then((note) => {
+			if (note) {
+				response.json(note);
+			} else {
+				response.status(404).end();
+			}
+		})
+		.catch((error) => next(error));
 });
 
-app.delete("/api/notes/:id", (request, response) => {
-	const id = String(request.params.id);
+app.delete("/api/notes/:id", (request, response, next) => {
+	const body = request.body;
+	console.log(body.content);
+	const note = {
+		content: body.content,
+		important: body.important,
+	};
 
-	Note.findById(id).then((note) => {
-		response.json(note);
-	});
+	Note.findByIdAndUpdate(request.params.id, note, { new: true })
+		.then((updatedNote) => {
+			response.json(updatedNote);
+		})
+		.catch((error) => next(error));
+});
 
-	response.status(204).end();
+app.put("/api/notes/:id", (request, response) => {
+	Note.findByIdAndUpdate(request.params.id)
+		.then((note) => {
+			if (note) {
+				response.json(note);
+			} else {
+				response.status(404).end();
+			}
+		})
+		.catch((error) => next(error));
 });
 
 app.post("/api/notes", (request, response) => {
