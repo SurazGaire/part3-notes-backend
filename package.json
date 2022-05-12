@@ -8,7 +8,7 @@
     "dev": "cross-env NODE_ENV=development nodemon index.js",
     "logs:prod": "heroku logs --tail",
     "deploy": "git push heroku master",
-    "test": "cross-env NODE_ENV=test jest --verbose --runInBand"
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand --forceExit"
   },
   "author": "",
   "license": "ISC",
@@ -22,9 +22,12 @@
   "devDependencies": {
     "dotenv": "^16.0.0",
     "jest": "^28.0.3",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "supertest": "^6.2.3"
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "verbose": true,
+    "testTimeout": 1000000
   }
 }
