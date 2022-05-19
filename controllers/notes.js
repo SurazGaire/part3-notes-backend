@@ -1,4 +1,5 @@
 const notesRouter = require("express").Router();
+const { request } = require("../app");
 const Note = require("../models/note");
 
 notesRouter.get("/", async (request, response) => {
@@ -18,7 +19,7 @@ notesRouter.get("/:id", (request, response, next) => {
     .catch((error) => next(error));
 });
 
-notesRouter.post("/", (request, response, next) => {
+notesRouter.post("/", async (request, response, next) => {
   const body = request.body;
 
   const note = new Note({
@@ -26,21 +27,25 @@ notesRouter.post("/", (request, response, next) => {
     important: body.important || false,
     date: new Date(),
   });
-
-  note
-    .save()
-    .then((savedNote) => {
-      response.json(savedNote);
-    })
-    .catch((error) => next(error));
+  try {
+    const savedNote = await note.save();
+    response.status(201).json(savedNote);
+  } catch (exception) {
+    next(exception);
+  }
 });
 
-notesRouter.delete("/:id", (request, response, next) => {
-  Note.findByIdAndRemove(request.params.id)
-    .then(() => {
-      response.status(204).end();
-    })
-    .catch((error) => next(error));
+notesRouter.delete("/:id", async (request, response, next) => {
+  try {
+    const note = await Note.findOneAndRemove(request.params.id);
+    if (note) {
+      response.json(note);
+    } else {
+      response.status(404).end();
+    }
+  } catch (exception) {
+    next(exception);
+  }
 });
 
 notesRouter.put("/:id", (request, response, next) => {
