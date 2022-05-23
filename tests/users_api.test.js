@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const helper = require("./test_helper");
 const app = require("../app");
 const api = supertest(app);
+const bcrypt = require("bcrypt");
 const User = require("../models/user");
 
 describe("when there is initially one user in db", () => {
