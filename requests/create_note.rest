@@ -2,6 +2,7 @@ POST http://localhost:3001/api/notes
 Content-Type: application/json
 
 {
-    "content" : "This is a test note",
-    "important" : "true"
+    "content" : "the existing node and test should be changed",
+    "important" : "true",
+    "userId" : "628b3bb34b88c7d6074b3455"
 }

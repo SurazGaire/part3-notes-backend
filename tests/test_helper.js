@@ -1,5 +1,5 @@
 const Note = require("../models/note");
-const Note = require("../models/user");
+const User = require("../models/user");
 
 const initialNotes = [
   {
