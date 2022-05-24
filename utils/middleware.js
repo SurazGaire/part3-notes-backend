@@ -11,6 +11,7 @@ const requestLogger = (request, response, next) => {
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: "unknown endpoint" });
 };
+
 const errorHandler = (error, request, response, next) => {
   if (error.name === "CastError") {
     return response.status(400).send({
@@ -34,7 +35,6 @@ const errorHandler = (error, request, response, next) => {
 
   next(error);
 };
-
 module.exports = {
   requestLogger,
   unknownEndpoint,
