@@ -1,8 +1,16 @@
 POST http://localhost:3001/api/notes
 Content-Type: application/json
+<<<<<<< Updated upstream
 
 {
     "content" : "the existing node and test should be changed",
     "important" : "true",
     "userId" : "628b3bb34b88c7d6074b3455"
+=======
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI2MWVmMGNjM2U4ZWZkMGRkMmViNjIxNWUiLCJpYXQiOjE2NTMzNjg0MDJ9.VxLbVBVVPJNumgbO1B1bKGS5xTIZaiCFzrV3YYLOWiU
+
+{
+    "content" : "Hey this is my first note after authenticatiion",
+    "important" : "true"
+>>>>>>> Stashed changes
 }
